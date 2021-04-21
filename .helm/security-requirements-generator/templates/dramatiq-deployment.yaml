@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dramatiq
+  name: dramatiq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: dramatiq
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: dramatiq
+    spec:
+      containers:
+        - args:
+            - run-dramatiq
+          env:
+            - name: BASE_URL
+          image: "{{ .Values.back.image}}:{{ .Values.tag }}"
+          name: dramatiq
+          resources: {}
+          volumeMounts:
+            - mountPath: /application/src/media
+              name: media-data
+            - mountPath: /application/src/static
+              name: static-data
+      restartPolicy: Always
+      volumes:
+        - name: media-data
+          persistentVolumeClaim:
+            claimName: media-data
+        - name: static-data
+          persistentVolumeClaim:
+            claimName: static-data
+status: {}

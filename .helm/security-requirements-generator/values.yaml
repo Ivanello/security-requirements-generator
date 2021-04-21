@@ -1,0 +1,19 @@
+name: security-requirements-generator
+domain: 127.0.0.1
+tag: 0.1.0
+nginx:
+  image: whitespots/security-requirements-generator-nginx
+back:
+  image: whitespots/security-requirements-generator-back
+front:  
+  image: whitespots/security-requirements-generator-front
+
+redis: 
+  cluster:
+    enabled: false
+    slaveCount: 0
+
+postgresql:
+  postgresqlDatabase: main
+  postgresqlUsername: user
+  postgresqlPassword: pass
